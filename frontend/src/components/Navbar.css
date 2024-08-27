@@ -1,0 +1,127 @@
+
+.nav {
+  padding: 30px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-family: 'Clash Display', sans-serif;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  transition: color 0.3s;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-links a:hover {
+  color: #ff6b6b;
+  border-bottom: 2px solid #ff6b6b;
+}
+
+/* Styling for the active link */
+.nav-links a.active {
+  color: #ff5555; /* Change text color */
+  font-weight: bold;
+}
+
+/* Hamburger Menu Styles */
+.menu-toggle {
+  display: none; /* Initially hide for larger screens */
+  cursor: pointer;
+  
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 3px 0;
+  /* transition: transform 0.3s, opacity 0.3s; */
+}
+
+.nav-links.open {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.nav-links.open li {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.Logout {
+  padding: 10px 25px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #000000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.Logout:hover {
+  background-color: #ff3b3b;
+}
+
+
+@media screen and (max-width: 768px) {
+  .nav {
+    flex-direction: row;
+    align-items: flex-start;
+    position: relative;
+    justify-content: space-between;
+    margin: 0 20px;
+    align-items: center;
+  }
+  .nav-links a {
+    color: #333;
+  }
+
+  .menu-toggle {
+    display: flex; 
+    flex-direction: column;
+  }
+
+  .nav-links {
+    display: none; /* Initially hide for smaller screens */
+  }
+}
