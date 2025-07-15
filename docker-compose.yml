@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "2000:2000"  # Map port 2000 inside the container to port 2000 on your host
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"  # Map port 3000 inside the container to port 3000 on your host
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development

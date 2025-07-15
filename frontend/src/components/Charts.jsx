@@ -1,38 +1,32 @@
 import React from "react";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "../components/ui/card";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
 } from "../components/ui/chart";
 
-const Charts = ({ data = [], year }) => {
+const Charts = ({ data = [], title = "Chart" }) => {
     // Debugging: Log the data to the console
     console.log("Charts component data:", data);
 
     if (!Array.isArray(data) || data.length === 0) {
         return (
-            <div style={{ padding: "20px" }}>
-                <p>No data available for the selected year.</p>
+            <div className="flex items-center justify-center h-full">
+                <p className="text-gray-500">No data available for the selected criteria.</p>
             </div>
         );
     }
 
     // Transform data to match chart requirements
     const chartData = data.map(d => ({
-        month: d.month,
-        emailCount: d.emailCount || 0,
+        name: d.month || d.projectName || d.name || "Unknown",
+        value: d.count || d.value || 0,
     }));
 
     const chartConfig = {
-        emailCount: {
-            label: "Emails Sent",
+        value: {
+            label: "Count",
             color: "hsl(var(--chart-1))",
         },
         label: {
@@ -41,55 +35,44 @@ const Charts = ({ data = [], year }) => {
     };
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Emails Sent in {year}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig}>
+        <div className="w-full h-full">
+            <ChartContainer config={chartConfig}>
+                <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         data={chartData}
-                        layout="vertical"
-                        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                     >
-                        <CartesianGrid horizontal={false} />
-                        <YAxis
-                            dataKey="month"
-                            type="category"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                            tickFormatter={(value) => value.slice(0, 3)}
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis 
+                            dataKey="name"
+                            tick={{ fontSize: 12 }}
+                            angle={-45}
+                            textAnchor="end"
+                            height={80}
                         />
-                        <XAxis dataKey="emailCount" type="number" hide />
+                        <YAxis 
+                            tick={{ fontSize: 12 }}
+                        />
                         <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent indicator="line" />}
+                            cursor={{ fill: 'rgba(0, 0, 0, 0.1)' }}
+                            content={<ChartTooltipContent />}
                         />
                         <Bar
-                            dataKey="emailCount"
-                            fill="var(--color-desktop)"
+                            dataKey="value"
+                            fill="#3b82f6"
                             radius={4}
                         >
                             <LabelList
-                                dataKey="month"
-                                position="insideLeft"
-                                offset={8}
-                                className="fill-[--color-label]"
-                                fontSize={12}
-                            />
-                            <LabelList
-                                dataKey="emailCount"
-                                position="right"
-                                offset={8}
+                                dataKey="value"
+                                position="top"
                                 className="fill-foreground"
-                                fontSize={12}
+                                fontSize={10}
                             />
                         </Bar>
                     </BarChart>
-                </ChartContainer>
-            </CardContent>
-        </Card>
+                </ResponsiveContainer>
+            </ChartContainer>
+        </div>
     );
 };
 

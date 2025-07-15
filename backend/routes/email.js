@@ -73,62 +73,6 @@ router.delete("/deleteEmail", async (req, res) => {
   }
 });
 
-
-
-router.get("/emailReport", async (req, res) => {
-  try {
-      const { year, projectId } = req.query;
-
-      if (!year) {
-          return res.status(400).json({ error: "Year is required" });
-      }
-
-      const startDate = new Date(year, 0, 1);
-      const endDate = new Date(year, 11, 31, 23, 59, 59, 999);
-
-      let filter = {
-          createdAt: { $gte: startDate, $lte: endDate },
-      };
-
-      if (projectId) {
-          filter.ProjectId = projectId;
-      }
-
-      const emails = await Email.aggregate([
-          { $match: filter },
-          {
-              $group: {
-                  _id: { month: { $month: "$createdAt" }, projectId: "$ProjectId" },
-                  count: { $sum: 1 },
-              },
-          },
-          {
-              $lookup: {
-                  from: "projects",
-                  localField: "_id.projectId",
-                  foreignField: "_id",
-                  as: "project",
-              },
-          },
-          {
-              $unwind: "$project",
-          },
-          {
-              $project: {
-                  month: "$_id.month",
-                  projectName: "$project.projectName",
-                  count: 1,
-              },
-          },
-      ]);
-
-      res.status(200).json(emails);
-  } catch (error) {
-      console.error("Error fetching email report:", error);
-      res.status(500).json({ error: "Error fetching email report", details: error.message });
-  }
-});
-
 router.get("/monthlyEmailReport", async (req, res) => {
   try {
     const { year } = req.query;
@@ -217,8 +161,5 @@ router.get("/projectReport", async (req, res) => {
     res.status(500).json({ error: "Error fetching project report", details: error.message });
   }
 });
-
-module.exports = router;
-
 
 module.exports = router;
